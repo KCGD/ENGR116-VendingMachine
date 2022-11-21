@@ -25,7 +25,6 @@
   },
   "bin": "main.js",
   "dependencies": {
-    "keypress": "^0.2.1",
-    "terminal-kit": "^3.0.0"
+    "keypress": "^0.2.1"
   }
 }

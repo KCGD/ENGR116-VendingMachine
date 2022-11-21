@@ -2,9 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as process from "process";
 import { item } from "./src/modules/item.h";
-import * as termkit from "terminal-kit";
 import * as readline from 'readline';
-let term = termkit.terminal;
 
 //create interfact
 const rl = readline.createInterface({
