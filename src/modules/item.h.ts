@@ -1,5 +1,6 @@
 type name = "Sprite" | "Cocacola" | "Twix";
 
+//define the item class
 export class item {
     itemName:name;
     price:number;

@@ -1,3 +1,7 @@
+/* 
+    "I pledge that I have abided by the Stevens honor pledge"
+*/
+
 import * as fs from "fs";
 import * as path from "path";
 import * as process from "process";
@@ -9,15 +13,6 @@ const rl = readline.createInterface({
     'input': process.stdin,
     'output':process.stdout
 })
-
-//create template for user argument parsing
-//only flags that require aditional arguments will be assigned here
-let knownFlags:string[] = ["--help", "-h"];
-
-//store process arguments
-let args = {
-
-}
 
 //setup stdin
 require('keypress')(process.stdin);
@@ -32,10 +27,10 @@ function Main(): void {
     let money:number = 20;
     let inventory:item[] = [];
 
-    //register selection changes
+    //register keybinds
     process.stdin.on('keypress', function(char:any, key:any): void {
-        //console.log(key);
         switch(key.name) {
+            //down, up, left and right change the position of the current selection
             case "down":
                 vendingMachine[selected].selected = false;
                 if(selected + 4 < vendingMachine.length) {
@@ -68,14 +63,20 @@ function Main(): void {
                 vendingMachine[selected].selected = true;
                 renderVendingMachine(vendingMachine, vendingMachine[selected], money);
             break;
+            //ctrl + c exits the program
             case "c":
                 if(key.ctrl) {
                     process.exit(0);
                 }
             break;
+            //as does escape
             case "escape":
                 process.exit(0);
             break;
+            //return buys the current item, and removes it from the vending machine.
+            //if you do not have enough money to buy the item, the program gives you the option to "go into debt"
+            //if you chose yes, your money amount goes negative
+            //if not, the program exits.
             case "return":
                 if(money - vendingMachine[selected].price < 0 && money > 0) {
                     console.clear();
@@ -103,6 +104,7 @@ function Main(): void {
                     }
                 }
             break;
+            //prints your current inventory
             case "i":
                 console.clear();
                 console.log("You currently have");
@@ -126,6 +128,7 @@ function Main(): void {
             case "backspace":
                 renderVendingMachine(vendingMachine, vendingMachine[selected], money);
             break;
+            //restocks the vending machine
             case "r":
                 //reset all vending machine entries
                 for(let i = 0; i < vendingMachine.length; i++) {
@@ -136,7 +139,7 @@ function Main(): void {
         }
     })
 
-    //initialize vending machine
+    //initialize vending machine with semi-random items
     let vendingMachine:item[] = [
         new item("Cocacola", 10), 
         new item("Sprite", 5), 
@@ -168,6 +171,7 @@ function Main(): void {
     renderVendingMachine(vendingMachine, vendingMachine[selected], money);
 }
 
+//renders the vending machine to the screen
 function renderVendingMachine(vendingMachine:item[], itemForStats:item, money:number): void {
     console.clear();
     console.log("Move selection: arrow keys, buy: enter, View inventory: i, Refill: r, Exit: ctrl + c\n");
